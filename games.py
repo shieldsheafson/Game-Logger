@@ -51,14 +51,15 @@ class gui_maker:
         self.currentgame = tk.StringVar()
 
         with open(file, 'r') as file:
-            text = file.readlines()[0].split(', ')
-            text.sort()
-        
-        self.gameslist = text # list of all games in database
+            self.fullText = file.read()
+            firstLine = self.fullText.split('\n')[0].split(', ')
+            firstLine.sort()
+
+        self.gameslist = firstLine # list of all games in database
 
         self.games = ttk.Combobox(self.choose_game, 
                                   textvariable=self.currentgame, 
-                                  values=text)
+                                  values=firstLine)
         self.currentgame.trace_add('write', self.autocomplete)
         self.games.grid(column=self.centerCol, row=gameInputRow+1, columnspan=self.numColsInChooseGameFrame)
 
@@ -200,6 +201,12 @@ class gui_maker:
                           winners=[x for x in self.winners.get().split(', ')],
                           extra_info=self.extra_info
                           )
+        
+        # modifies the list of games in the database if needed
+        if game.gameName not in self.gameslist:
+            with open(self.file, 'w') as file:
+                self.fullText = self.fullText.replace('\n', ', ' + game.gameName + '\n', 1)
+                file.write(self.fullText)
 
         self.append_game_to_file(self.file, game)
 
