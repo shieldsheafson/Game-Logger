@@ -205,8 +205,11 @@ class gui_maker:
         # modifies the list of games in the database if needed
         if game.gameName not in self.gameslist:
             with open(self.file, 'w') as file:
-                self.fullText = self.fullText.replace('\n', ', ' + game.gameName + '\n', 1)
-                file.write(self.fullText)
+                if self.fullText:
+                    self.fullText = self.fullText.replace('\n', ', ' + game.gameName + '\n', 1)
+                    file.write(self.fullText)
+                else: 
+                    file.write(game.gameName + '\n') # for initializing a database
 
         self.append_game_to_file(self.file, game)
 
