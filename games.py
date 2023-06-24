@@ -99,7 +99,7 @@ class gui_maker:
         self.number_of_players = tk.StringVar()
         self.check_if_int_wrapper = (self.choose_game.register(self.check_if_int), '%P')
 
-        self.num_players_entry = ttk.Entry(self.choose_game, textvariable=self.number_of_players, validate='key', validatecommand=self.check_if_int_wrapper)
+        self.num_players_entry = ttk.Entry(self.choose_game, textvariable=self.number_of_players, validate='key', validatecommand=self.check_if_int_and_less_than_3_wrapper)
         self.num_players_entry.grid(row=self.playersInputRow+1, column=self.centerCol, columnspan=self.numColsInChooseGameFrame)
         self.number_of_players.trace_add('write', self.add_players)
 
